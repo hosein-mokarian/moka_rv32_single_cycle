@@ -35,8 +35,8 @@ module alu
         OP_ADD: y = srca + srcb;
         OP_SUB: y = srca - srcb;
         OP_SLL: y = srca << srcb;
-        OP_SLT: y = (srca < srcb) ? {(DATA_WIDTH - 1){1'b0}, 1'b1} : {DATA_WIDTH{1'b0}};
-        OP_SLTU: y = (srca < srcb) ? {(DATA_WIDTH - 1){1'b0}, 1'b1} : {DATA_WIDTH{1'b0}};
+        OP_SLT: y = (srca < srcb) ? {{(DATA_WIDTH - 1){1'b0}}, 1'b1} : {DATA_WIDTH{1'b0}};
+        OP_SLTU: y = (srca < srcb) ? {{(DATA_WIDTH - 1){1'b0}}, 1'b1} : {DATA_WIDTH{1'b0}};
         OP_XOR: y = srca ^ srcb;
         OP_SRL: y = srca >> srcb;
         OP_SRA: y = srca >>> srcb; // {srca[DATA_WIDTH - 1], srca[DATA_WIDTH - 2 : 0] >> srcb};

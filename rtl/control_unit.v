@@ -209,7 +209,7 @@ module control_unit
                   ALUControl = OP_SUB;
               endcase
             end
-            3'b001: ALUControl = OP_SLL
+            3'b001: ALUControl = OP_SLL;
             3'b010: ALUControl = OP_SLT;
             3'b011: ALUControl = OP_SLTU;
             3'b100: ALUControl = OP_XOR;
