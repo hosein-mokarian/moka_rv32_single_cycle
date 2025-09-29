@@ -3,11 +3,12 @@ package moka_seq_pkg;
 import uvm_pkg::*;
 `include "uvm_macros.svh"
 import moka_rv32i_sc_pkg::*;
-import moka_rv32i_sc_instr_pkg;
+import moka_rv32i_sc_instr_pkg::*;
 
 class moka_rv32i_sc_sequence extends uvm_sequence;
     rand int program_length = 10;
     rand int num_trans = 20;
+    moka_rv32i_sc_instr_cls instr_obj;
 
     constraint num_trans_c {
         program_length inside {[10:100]};
@@ -17,12 +18,12 @@ class moka_rv32i_sc_sequence extends uvm_sequence;
     `uvm_object_utils(moka_rv32i_sc_sequence)
 
     task body;
-        moka_rv32i_sc_instr_cls instr_obj;
+        
         logic [31:0] rand_instr;
 
         repeat (num_trans)
         begin
-            instr_obj = moka_rv32i_sc_instr_cls::type_id::create("instr_obj");
+            instr_obj = new;
 
             `uvm_info("SEQ", "Programing the instruction memory ...", UVM_LOW)
             `uvm_info("SEQ", $sformatf("program_length = %d", program_length), UVM_LOW)
@@ -43,19 +44,19 @@ class moka_rv32i_sc_sequence extends uvm_sequence;
     endtask
 
     function bit generate_random_opcode(ref rv32i_opcode_e opcode);
-        int weights[instr_lib::opcode_e] = '{
-            instr_lib::ADD:  30, instr_lib::ADDI: 25, instr_lib::SUB:  20,
-            instr_lib::LW:   15, instr_lib::SW:   15, instr_lib::BEQ:  10,
-            instr_lib::BNE:  10, instr_lib::LUI:   5, instr_lib::AUIPC: 5,
+        int weights[rv32i_opcode_e] = '{
+            ADD:  30, ADDI: 25, SUB:  20,
+            LW:   15, SW:   15, BEQ:  10,
+            BNE:  10, LUI:   5, AUIPC: 5,
             default: 1
         };
 
         if ($urandom_range(100) < 70)
-            opcode = instr_lib::ADD;
+            opcode = ADD;
         else if ($urandom_range(100) < 90)
-            opcode = instr_lib::ADDI;
+            opcode = ADDI;
         else
-            opcode = instr_lib::opcode_e'($urandom_range(0, 35));
+            opcode = rv32i_opcode_e'($urandom_range(0, 35));
             
         return 1;
     endfunction
@@ -64,11 +65,11 @@ class moka_rv32i_sc_sequence extends uvm_sequence;
         rv32i_opcode_e opcode,
         ref logic [4:0] rd,
         ref logic [4:0] rs1, ref logic [4:0] rs2,
-        ref logic [4:0] imm
+        ref logic [11:0] imm
     );
-        if (opcode inside {instr_lib::SW, instr_lib::SB, instr_lib::SH, 
-                          instr_lib::BEQ, instr_lib::BNE, instr_lib::BLT, 
-                          instr_lib::BGE, instr_lib::BLTU, instr_lib::BGEU}) begin
+        if (opcode inside {SW, SB, SH, 
+                          BEQ, BNE, BLT, 
+                          BGE, BLTU, BGEU}) begin
             rd = 0;
         end else begin
             rd = $urandom_range(1, 31);
@@ -78,8 +79,8 @@ class moka_rv32i_sc_sequence extends uvm_sequence;
         rs2 = $urandom_range(0, 31);
         
         case (opcode)
-            instr_lib::LW, instr_lib::SW: imm = $urandom_range(0, 255) & 12'hFFC; // Aligned
-            instr_lib::BEQ, instr_lib::BNE: imm = $urandom_range(-100, 100) * 4;   // Branch offset
+            LW, SW: imm = $urandom_range(0, 255) & 12'hFFC; // Aligned
+            BEQ, BNE: imm = $urandom_range(-100, 100) * 4;   // Branch offset
             default: imm = $urandom_range(0, 4095);
         endcase
         
@@ -101,7 +102,7 @@ class moka_rv32i_sc_sequence extends uvm_sequence;
             imm = 0;
         end
 
-        return instr_gen.generate_instr(opcode, rd, rs1, rs2, imm);
+        return instr_obj.generate_instr(opcode, rd, rs1, rs2, imm);
     endfunction
 
     function void program_instr_memory(int address, int data);

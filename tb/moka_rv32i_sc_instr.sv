@@ -3,15 +3,15 @@ package moka_rv32i_sc_instr_pkg;
 import uvm_pkg::*;
 `include "uvm_macros.svh"
 
-class moka_rv32i_sc_instr_cls;
+typedef enum { 
+    LUI, AUIPC, JAL, JALR, 
+    BEQ, BNE, BLT, BGE, BLTU, BGEU,
+    LB, LH, LW, LBU, LHU, SB, SH, SW,
+    ADDI, SLTI, SLTIU, XORI, ORI, ANDI, SLLI, SRLI, SRAI,
+    ADD, SUB, SLL, SLT, SLTU, XOR, SRL, SRA, OR, AND
+} rv32i_opcode_e;
 
-    typedef enum { 
-        LUI, AUIPC, JAL, JALR, 
-        BEQ, BNE, BLT, BGE, BLTU, BGEU,
-        LB, LH, LW, LBU, LHU, SB, SH, SW,
-        ADDI, SLTI, SLTIU, XORI, ORI, ANDI, SLLI, SRLI, SRAI,
-        ADD, SUB, SLL, SLT, SLTU, XOR, SRL, SRA, OR, AND
-    } rv32i_opcode_e;
+class moka_rv32i_sc_instr_cls;
 
     function logic[31:0] generate_instr(
         rv32i_opcode_e opcode,

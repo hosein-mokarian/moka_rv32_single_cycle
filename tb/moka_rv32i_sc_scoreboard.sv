@@ -13,10 +13,7 @@ class moka_rv32i_sc_scoreboard extends uvm_scoreboard;
         super.new(name, parent);
         ap_imp = new("ap_imp", this);
     endfunction
-
-    function void connect_phase(uvm_phase phase);
-        
-    endfunction
+    
 endclass
 
 endpackage

@@ -5,6 +5,7 @@ import uvm_pkg::*;
 
 class moka_rv32i_sc_transaction extends uvm_sequence_item;
     rand logic [31 : 0] address;
+	logic [31 : 0] rd_data;
     rand logic [31 : 0] wr_data;
     logic mem_we;
 

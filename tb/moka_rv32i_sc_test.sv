@@ -18,7 +18,7 @@ class moka_rv32i_sc_test extends uvm_test;
 
     function void build_phase(uvm_phase phase);
         env = moka_rv32i_sc_env::type_id::create("env", this);
-        coverage = moka_rv32i_sc_coverage::type_id::create("coverage", this);
+//        coverage = moka_rv32i_sc_coverage::type_id::create("coverage", this);
     endfunction
 
     task run_phase(uvm_phase phase);
@@ -31,7 +31,7 @@ class moka_rv32i_sc_test extends uvm_test;
         seq.start(env.agent.sequencer);
         phase.drop_objection(this);
 
-        `uvm_info("TEST", $sformatf("Final coverage: %0.2f%%", coverage.get_coverage()), UVM_LOW)
+//        `uvm_info("TEST", $sformatf("Final coverage: %0.2f%%", coverage.get_coverage()), UVM_LOW)
     endtask
 endclass
 

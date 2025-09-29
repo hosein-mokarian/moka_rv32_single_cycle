@@ -18,7 +18,10 @@ module moka_tb;
   )
   dut (
     .rstn(vif.rstn),
-    .en(vif.en)
+    .en(vif.en),
+    .clk(clk),
+    .flash_data(vif.wr_data),
+    .flash_memory(vif.mem_we)
   );
 
   initial begin
@@ -29,13 +32,16 @@ module moka_tb;
   initial begin
     vif.rstn = 0;
     vif.en = 0;
+    vif.address = 32'b0;
+    vif.wr_data = 32'hFFFFFFFF;
+    vif.mem_we = 1;
     #20 vif.rstn = 1;
     #10 vif.en = 1;
   end
 
   initial begin
-    #1000;  // Keep simulation alive for 1000ns
-    $finish; // Then explicitly finish
+    #50000;
+    $finish;
   end
 
 //  initial begin
