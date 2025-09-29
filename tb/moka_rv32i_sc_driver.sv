@@ -25,7 +25,9 @@ class moka_rv32i_sc_driver extends uvm_driver #(moka_rv32i_sc_transaction);
     task run_phase(uvm_phase phase);
         forever begin
              seq_item_port.get_next_item(req);
-             // do something
+             vif.address = req.address;
+             vif.wr_data = req.wr_data;
+             vif.mem_we = req.mem_we;
              seq_item_port.item_done();
         end
     endtask

@@ -31,7 +31,10 @@ class moka_rv32i_sc_monitor extends uvm_monitor;
 
         forever begin
             tx = moka_rv32i_sc_transaction::type_id::create("tx");
-            tx.en = vif.en;
+            tx.address = vif.address;
+            tx.rd_data = vif.rd_data;
+            tx.wr_data = vif.wr_data;
+            tx.mem_we = vif.mem_we;
             ap.write(tx);
         end
     endtask
