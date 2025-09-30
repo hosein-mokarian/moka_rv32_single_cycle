@@ -16,12 +16,14 @@ module moka_top
   (
     input rstn,
     input en,
-    input clk
+    input clk,
+    input [DATA_WIDTH - 1 : 0] flash_data,
+    input flash_memory
   );
 
 
-  parameter INST_MEM_CAPACITY = 10;
-  parameter DATA_MEM_CAPACITY = 10;
+  parameter INST_MEM_CAPACITY = 1024;
+  parameter DATA_MEM_CAPACITY = 1024;
   parameter NB_OF_REGS = 32;
   parameter ADDRESS_BIT_WIDTH = 5;
 
@@ -120,7 +122,10 @@ module moka_top
   (
     .rstn(rstn),
     .en(en),
+    .clk(clk),
     .A(pc),
+    .WD(flash_data),
+    .WE(flash_memory),
     .read_data(instruction)
   );
 
