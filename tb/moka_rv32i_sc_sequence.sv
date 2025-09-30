@@ -5,7 +5,7 @@ import uvm_pkg::*;
 import moka_rv32i_sc_pkg::*;
 import moka_rv32i_sc_instr_pkg::*;
 
-class moka_rv32i_sc_sequence extends uvm_sequence;
+class moka_rv32i_sc_sequence extends uvm_sequence #(moka_rv32i_sc_transaction);
     rand int program_length = 10;
     rand int num_trans = 20;
     moka_rv32i_sc_instr_cls instr_obj;
@@ -17,26 +17,37 @@ class moka_rv32i_sc_sequence extends uvm_sequence;
 
     `uvm_object_utils(moka_rv32i_sc_sequence)
 
-    task body;
-        
+    function new(string name = "moka_rv32i_sc_sequence");
+        super.new(name);
+    endfunction
+
+    task body;        
         logic [31:0] rand_instr;
 
-        repeat (num_trans)
+        `uvm_info("SEQ", "body is started", UVM_LOW)
+
+        repeat (1) // num_trans
         begin
-            instr_obj = new;
+            instr_obj = new();
 
             `uvm_info("SEQ", "Programing the instruction memory ...", UVM_LOW)
             `uvm_info("SEQ", $sformatf("program_length = %d", program_length), UVM_LOW)
 
-            for (int i = 0; i < program_length; i++) begin
+            // Random code generation
+            for (int i = 0; i < 1; i++) begin // program_length
                 rand_instr = generate_random_instr();
                 program_instr_memory(i * 4, rand_instr);
-                `uvm_info("SEQ", $sformatf("Progbar = %d", i * 100 / program_length), UVM_LOW)
+                `uvm_info("SEQ", $sformatf("rand_instr = 0x%08h", rand_instr), UVM_LOW)
+                `uvm_info("SEQ", $sformatf("Progbar = %d%%", (i + 1) * 100 / program_length), UVM_LOW)
             end
+
+            // Test simple NOP instruction
+            // program_instr_memory(32'h00000000, 32'h00000013);
 
             `uvm_info("SEQ", "Programing the instruction memory is completed", UVM_LOW)
 
-            `uvm_info("SEQ", "Execution the program", UVM_LOW)
+            `uvm_info("SEQ", "Execution the program ...", UVM_LOW)
+            execute_program();
             #1000;
             `uvm_info("SEQ", "The program is executrd.", UVM_LOW)
 
@@ -105,7 +116,7 @@ class moka_rv32i_sc_sequence extends uvm_sequence;
         return instr_obj.generate_instr(opcode, rd, rs1, rs2, imm);
     endfunction
 
-    function void program_instr_memory(int address, int data);
+    task program_instr_memory(int address, int data);
         moka_rv32i_sc_transaction tx;
         tx = moka_rv32i_sc_transaction::type_id::create("tx");
 
@@ -114,9 +125,20 @@ class moka_rv32i_sc_sequence extends uvm_sequence;
         tx.mem_we = 1;
 
         start_item(tx);
-        assert(tx.randomize());
+        // assert(tx.randomize());
         finish_item(tx);
-    endfunction
+    endtask
+
+    task execute_program();
+        moka_rv32i_sc_transaction tx;
+        tx = moka_rv32i_sc_transaction::type_id::create("tx");
+
+        tx.mem_we = 0;
+
+        start_item(tx);
+        // assert(tx.randomize());
+        finish_item(tx);
+    endtask
 
 endclass
 

@@ -6,7 +6,7 @@ module moka_tb;
   `include "uvm_macros.svh"
   import moka_test_pkg::*;
 
-  localparam DATA_WIDTH = 8;
+  localparam DATA_WIDTH = 32;
 
   bit clk = 0;
   always #5 clk = ~clk;
@@ -25,8 +25,8 @@ module moka_tb;
   );
 
   initial begin
-    uvm_config_db#(virtual fifo_if)::set(null, "*", "vif", vif);
-    run_test("fifo_test");
+    uvm_config_db#(virtual moka_rv32i_sc_if)::set(null, "*", "vif", vif);
+    run_test("moka_rv32i_sc_test");
   end
 
   initial begin
@@ -45,8 +45,8 @@ module moka_tb;
   end
 
 //  initial begin
-//    $dumpfile("fifo_tb.vcd");
-//    $dumpvars(0, fifo_tb);
+//    $dumpfile("moka_rv32i_sc_tb.vcd");
+//    $dumpvars(0, moka_rv32i_sc_tb);
 //  end
   
 endmodule

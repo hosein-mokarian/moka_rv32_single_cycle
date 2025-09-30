@@ -13,10 +13,11 @@ class moka_rv32i_sc_coverage extends uvm_subscriber#(moka_rv32i_sc_transaction);
 
     covergroup moka_rv32i_sc_cg;
         cp_opcode: coverpoint get_opcode(cov_trans.rd_data) {
-            bins arithmetic[] = {ADD, SUB, ADDI};
-            bins memory[]     = {LB, LH, LW, LBU, LHU, SB, SH, SW};
-            bins branch[]     = {BEQ, BNE, BLT, BGE, BLTU, BGEU};
-            bins jump[]       = {LUI, AUIPC, JAL, JALR};
+            bins arithmetic = {ADD, SUB, ADDI};
+            bins memory[]   = {LB, LH, LW, LBU, LHU, SB, SH, SW};
+            bins branch[]   = {BEQ, BNE, BLT, BGE, BLTU, BGEU};
+            bins jump[]     = {LUI, AUIPC, JAL, JALR};
+            bins reserve    = default;
         }
 
         cp_register_file: coverpoint get_rd(cov_trans.rd_data) {
@@ -35,11 +36,11 @@ class moka_rv32i_sc_coverage extends uvm_subscriber#(moka_rv32i_sc_transaction);
     function void write(moka_rv32i_sc_transaction t);
         cov_trans = t;
         moka_rv32i_sc_cg.sample();
-        `uvm_info("COV", $sformatf("Sampled : address = 0x%0h , read_data = ox%0h", t.address, t.rd_data), UVM_LOW)
+        // `uvm_info("COV", $sformatf("Sampled : address = 0x%0h , read_data = ox%0h", t.address, t.rd_data), UVM_LOW)
     endfunction
 
     function rv32i_opcode_e get_opcode(int data);
-        return data[6:0];
+        return rv32i_opcode_e'(data[6:0]);
     endfunction
 
     function logic [4:0] get_rd(int data);

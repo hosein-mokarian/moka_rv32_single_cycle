@@ -1,8 +1,5 @@
 package moka_rv32i_sc_instr_pkg;
 
-import uvm_pkg::*;
-`include "uvm_macros.svh"
-
 typedef enum { 
     LUI, AUIPC, JAL, JALR, 
     BEQ, BNE, BLT, BGE, BLTU, BGEU,
