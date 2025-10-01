@@ -16,7 +16,7 @@ module instruction_memory
 
   integer i;
 
-  always @(negedge rstn)
+  always @(posedge clk or negedge rstn)
   begin
     if (!rstn)
     begin
@@ -27,19 +27,15 @@ module instruction_memory
 
       for (i = 0; i < MEM_CAPACITY; i = i + 1)
       begin
-        mem[i] = 32'hFFFFFFFF;
+        mem[i] <= 32'hFFFFFFFF;
       end
     end
-  end
-
-  always @(posedge clk)
-  begin
-    if (en && WD)
+    else if (WE)
     begin
-      mem[A] = WD;
+      mem[A] <= WD;
     end
   end
 
-  assign read_data = (rstn && en && !WD) ? mem[A] : {DATA_WIDTH{1'b0}};
+  assign read_data = (rstn && en && !WE) ? mem[A] : {DATA_WIDTH{1'b0}};
 
 endmodule

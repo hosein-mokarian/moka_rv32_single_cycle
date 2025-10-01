@@ -17,8 +17,9 @@ module moka_top
     input rstn,
     input en,
     input clk,
-    input [DATA_WIDTH - 1 : 0] flash_data,
-    input flash_memory
+    input [DATA_WIDTH - 1 : 0] instr_mem_address,
+    input [DATA_WIDTH - 1 : 0] instr_mem_data,
+    input instr_mem_we
   );
 
 
@@ -34,6 +35,7 @@ module moka_top
   wire [DATA_WIDTH - 1 : 0] PCTarget;
 
   // instruction
+  wire [DATA_WIDTH - 1 : 0] instr_mem_adr;
   wire [DATA_WIDTH - 1 : 0] instruction;
   wire [6 : 0] op;
   wire [2 : 0] funct3;
@@ -114,6 +116,18 @@ module moka_top
     .y(PCTarget)
   );
 
+  mux2
+  #(.DATA_WIDTH(DATA_WIDTH))
+  MUX2_A_INS_MEM
+  (
+    .rstn(rstn),
+    .en(en),
+    .sel(instr_mem_we),
+    .a(pc),
+    .b(instr_mem_address),
+    .y(instr_mem_adr)
+  );
+
 
   instruction_memory
   #(.DATA_WIDTH(DATA_WIDTH),
@@ -123,9 +137,9 @@ module moka_top
     .rstn(rstn),
     .en(en),
     .clk(clk),
-    .A(pc),
-    .WD(flash_data),
-    .WE(flash_memory),
+    .A(instr_mem_adr), // pc
+    .WD(instr_mem_data),
+    .WE(instr_mem_we),
     .read_data(instruction)
   );
 
