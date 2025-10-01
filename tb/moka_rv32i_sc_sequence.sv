@@ -133,6 +133,7 @@ class moka_rv32i_sc_sequence extends uvm_sequence #(moka_rv32i_sc_transaction);
         moka_rv32i_sc_transaction tx;
         tx = moka_rv32i_sc_transaction::type_id::create("tx");
 
+        tx.en = 1;
         tx.mem_we = 0;
 
         start_item(tx);

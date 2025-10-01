@@ -4,6 +4,7 @@ import uvm_pkg::*;
 `include "uvm_macros.svh"
 
 class moka_rv32i_sc_transaction extends uvm_sequence_item;
+    logic en;
     rand logic [31:0] address;
 	logic [31:0] rd_data;
     rand logic [31:0] wr_data;
@@ -14,7 +15,9 @@ class moka_rv32i_sc_transaction extends uvm_sequence_item;
     // }
 
     `uvm_object_utils_begin(moka_rv32i_sc_transaction)
+        `uvm_field_int(en, UVM_ALL_ON)
         `uvm_field_int(address, UVM_ALL_ON)
+        `uvm_field_int(rd_data, UVM_ALL_ON)
         `uvm_field_int(wr_data, UVM_ALL_ON)
         `uvm_field_int(mem_we, UVM_ALL_ON)
     `uvm_object_utils_end
