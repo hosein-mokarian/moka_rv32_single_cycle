@@ -34,21 +34,21 @@ class moka_rv32i_sc_sequence extends uvm_sequence #(moka_rv32i_sc_transaction);
             `uvm_info("SEQ", $sformatf("program_length = %d", program_length), UVM_LOW)
 
             // Random code generation
-            for (int i = 0; i < 1; i++) begin // program_length
-                rand_instr = generate_random_instr();
-                program_instr_memory(i * 4, rand_instr);
-                `uvm_info("SEQ", $sformatf("rand_instr = 0x%08h", rand_instr), UVM_LOW)
-                `uvm_info("SEQ", $sformatf("Progbar = %d%%", (i + 1) * 100 / program_length), UVM_LOW)
-            end
+            // for (int i = 0; i < 1; i++) begin // program_length
+            //     rand_instr = generate_random_instr();
+            //     program_instr_memory(i * 4, rand_instr);
+            //     `uvm_info("SEQ", $sformatf("rand_instr = 0x%08h", rand_instr), UVM_LOW)
+            //     `uvm_info("SEQ", $sformatf("Progbar = %d%%", (i + 1) * 100 / program_length), UVM_LOW)
+            // end
 
             // Test simple NOP instruction
-            // program_instr_memory(32'h00000000, 32'h00000013);
+            program_instr_memory(32'h00000000, 32'h00000013);
 
             `uvm_info("SEQ", "Programing the instruction memory is completed", UVM_LOW)
 
             `uvm_info("SEQ", "Execution the program ...", UVM_LOW)
             execute_program();
-            #1000;
+            #600;
             `uvm_info("SEQ", "The program is executrd.", UVM_LOW)
 
         end
@@ -120,9 +120,12 @@ class moka_rv32i_sc_sequence extends uvm_sequence #(moka_rv32i_sc_transaction);
         moka_rv32i_sc_transaction tx;
         tx = moka_rv32i_sc_transaction::type_id::create("tx");
 
+        tx.en = 0;
         tx.address = address;
         tx.wr_data = data;
         tx.mem_we = 1;
+
+        #300;
 
         start_item(tx);
         // assert(tx.randomize());
@@ -135,6 +138,8 @@ class moka_rv32i_sc_sequence extends uvm_sequence #(moka_rv32i_sc_transaction);
 
         tx.en = 1;
         tx.mem_we = 0;
+
+        #150;
 
         start_item(tx);
         // assert(tx.randomize());

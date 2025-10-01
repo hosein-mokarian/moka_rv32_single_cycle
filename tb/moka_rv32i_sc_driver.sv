@@ -36,8 +36,10 @@ class moka_rv32i_sc_driver extends uvm_driver #(moka_rv32i_sc_transaction);
             `uvm_info("DRIVER", "Waiting for sequence item...", UVM_HIGH)
              seq_item_port.get_next_item(req);
 
+             `uvm_info("DRIVER", $sformatf("Received transaction: en=0x%01h", req.en), UVM_MEDIUM)
              `uvm_info("DRIVER", $sformatf("Received transaction: addr=0x%08h, data=0x%08h, we=0x%01h", req.address, req.wr_data, req.mem_we), UVM_MEDIUM)
 
+             vif.en = req.en;
              vif.address = req.address;
              vif.wr_data = req.wr_data;
              vif.mem_we = req.mem_we;

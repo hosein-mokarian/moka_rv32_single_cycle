@@ -1,4 +1,4 @@
-`timescale 1ns/1ps
+`timescale 1ns/100ps
 
 
 module moka_tb;
@@ -9,16 +9,18 @@ module moka_tb;
   localparam DATA_WIDTH = 32;
 
   bit clk = 0;
+  bit rstn = 0;
+
   always #5 clk = ~clk;
 
-  moka_rv32i_sc_if vif(clk);
+  moka_rv32i_sc_if vif(clk, rstn);
   moka_rv32i_sc_internal_if#(.DATA_WIDTH(DATA_WIDTH)) internal_vif(clk);
 
   moka_top #(
     .DATA_WIDTH(DATA_WIDTH)
   )
   dut (
-    .rstn(vif.rstn),
+    .rstn(rstn),
     .en(vif.en),
     .clk(clk),
     .instr_mem_address(vif.address),
@@ -113,17 +115,17 @@ module moka_tb;
   end
 
   initial begin
-    vif.rstn = 0;
+    rstn = 0;
     vif.en = 0;
     vif.address = 32'b0;
     vif.wr_data = 32'hFFFFFFFF;
     vif.mem_we = 1;
-    #20 vif.rstn = 1;
+    #20 rstn = 1;
     // #10 vif.en = 1;
   end
 
   initial begin
-    #50000;
+    #500000;
     $finish;
   end
 

@@ -1,5 +1,4 @@
-interface moka_rv32i_sc_if(input clk);
-    logic rstn;
+interface moka_rv32i_sc_if(input clk, rstn);
     logic en;
     logic [31:0] address;
     logic [31:0] rd_data;
