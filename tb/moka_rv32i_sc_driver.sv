@@ -44,7 +44,7 @@ class moka_rv32i_sc_driver extends uvm_driver #(moka_rv32i_sc_transaction);
              vif.wr_data = req.wr_data;
              vif.mem_we = req.mem_we;
 
-             @(posedge vif.clk);
+             @(negedge vif.clk);
 
              seq_item_port.item_done();
         end

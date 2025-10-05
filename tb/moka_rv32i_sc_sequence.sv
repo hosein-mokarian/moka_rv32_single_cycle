@@ -42,13 +42,26 @@ class moka_rv32i_sc_sequence extends uvm_sequence #(moka_rv32i_sc_transaction);
             // end
 
             // Test simple NOP instruction
-            program_instr_memory(32'h00000000, 32'h00000013);
+            // program_instr_memory(32'h00000000, 32'h00000013);
+
+            // Simple Test program
+            program_instr_memory(32'h00000000, 32'h00600293);
+            program_instr_memory(32'h00000001, 32'h000024B7);
+            program_instr_memory(32'h00000002, 32'h00448493);
+            program_instr_memory(32'h00000003, 32'h00002537);
+            program_instr_memory(32'h00000004, 32'h01000593);
+            program_instr_memory(32'h00000005, 32'h00B52023);
+            program_instr_memory(32'h00000006, 32'h00000513);
+            program_instr_memory(32'h00000007, 32'hFFC4A303);
+            program_instr_memory(32'h00000008, 32'h0064A423);
+            program_instr_memory(32'h00000009, 32'h0062E233);
+            program_instr_memory(32'h0000000A, 32'hFE420AE3);
 
             `uvm_info("SEQ", "Programing the instruction memory is completed", UVM_LOW)
 
             `uvm_info("SEQ", "Execution the program ...", UVM_LOW)
             execute_program();
-            #600;
+            #10000;
             `uvm_info("SEQ", "The program is executrd.", UVM_LOW)
 
         end
@@ -125,8 +138,6 @@ class moka_rv32i_sc_sequence extends uvm_sequence #(moka_rv32i_sc_transaction);
         tx.wr_data = data;
         tx.mem_we = 1;
 
-        #300;
-
         start_item(tx);
         // assert(tx.randomize());
         finish_item(tx);
@@ -138,8 +149,6 @@ class moka_rv32i_sc_sequence extends uvm_sequence #(moka_rv32i_sc_transaction);
 
         tx.en = 1;
         tx.mem_we = 0;
-
-        #150;
 
         start_item(tx);
         // assert(tx.randomize());

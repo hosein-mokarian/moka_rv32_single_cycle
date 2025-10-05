@@ -120,12 +120,12 @@ module moka_tb;
     vif.address = 32'b0;
     vif.wr_data = 32'hFFFFFFFF;
     vif.mem_we = 1;
-    #20 rstn = 1;
-    // #10 vif.en = 1;
+    #5 rstn = 1;
+    // #5 vif.en = 1;
   end
 
   initial begin
-    #500000;
+    #2000000;
     $finish;
   end
 

@@ -37,7 +37,7 @@ class moka_rv32i_sc_internal_tx #(DATA_WIDTH = 32) extends uvm_sequence_item;
     
     // control signals
     logic RegWrite;
-    logic [1 : 0] ImmSrc;
+    logic [2 : 0] ImmSrc;
     logic ALUSrc;
     logic [3 : 0] ALUControl;
     logic MemWrite;

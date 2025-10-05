@@ -103,42 +103,45 @@ class moka_rv32i_sc_monitor extends uvm_monitor;
 
             ap_internal.write(internal_tx);
 
-            // pc
-            `uvm_info("MONITOR", $sformatf("pc=0x%08h", internal_vif.pc), UVM_LOW)
-            `uvm_info("MONITOR", $sformatf("instr_mem_adr=0x%08h", internal_vif.instr_mem_adr), UVM_LOW)
-            `uvm_info("MONITOR", $sformatf("instruction=0x%08h", internal_vif.instruction), UVM_LOW)
+            if (vif.en == 1 && vif.mem_we == 0) begin
+                // pc
+                `uvm_info("MONITOR", $sformatf("pc=0x%08h", internal_vif.pc), UVM_LOW)
+                `uvm_info("MONITOR", $sformatf("PCTarget=0x%08h", internal_vif.PCTarget), UVM_LOW)
+                `uvm_info("MONITOR", $sformatf("instr_mem_adr=0x%08h", internal_vif.instr_mem_adr), UVM_LOW)
+                `uvm_info("MONITOR", $sformatf("instruction=0x%08h", internal_vif.instruction), UVM_LOW)
 
-            // instruction
-            `uvm_info("MONITOR", $sformatf("op=0x%08h", internal_vif.op), UVM_LOW)
-            `uvm_info("MONITOR", $sformatf("funct3=0x%08h", internal_vif.funct3), UVM_LOW)
-            `uvm_info("MONITOR", $sformatf("funct7=0x%08h", internal_vif.funct7), UVM_LOW)
-            `uvm_info("MONITOR", $sformatf("immediate=0x%08h", internal_vif.immediate), UVM_LOW)
-            `uvm_info("MONITOR", $sformatf("ImmExt=0x%08h", internal_vif.ImmExt), UVM_LOW)
-            `uvm_info("MONITOR", $sformatf("rs1=0x%08h", internal_vif.rs1), UVM_LOW)
-            `uvm_info("MONITOR", $sformatf("rs2=0x%08h", internal_vif.rs2), UVM_LOW)
-            `uvm_info("MONITOR", $sformatf("rd=0x%08h", internal_vif.rd), UVM_LOW)
+                // instruction
+                `uvm_info("MONITOR", $sformatf("op=0x%08h", internal_vif.op), UVM_LOW)
+                `uvm_info("MONITOR", $sformatf("funct3=0x%08h", internal_vif.funct3), UVM_LOW)
+                `uvm_info("MONITOR", $sformatf("funct7=0x%08h", internal_vif.funct7), UVM_LOW)
+                `uvm_info("MONITOR", $sformatf("immediate=0x%08h", internal_vif.immediate), UVM_LOW)
+                `uvm_info("MONITOR", $sformatf("ImmExt=0x%08h", internal_vif.ImmExt), UVM_LOW)
+                `uvm_info("MONITOR", $sformatf("rs1=0x%08h", internal_vif.rs1), UVM_LOW)
+                `uvm_info("MONITOR", $sformatf("rs2=0x%08h", internal_vif.rs2), UVM_LOW)
+                `uvm_info("MONITOR", $sformatf("rd=0x%08h", internal_vif.rd), UVM_LOW)
 
-            // register file
-            `uvm_info("MONITOR", $sformatf("RD1=0x%08h", internal_vif.RD1), UVM_LOW)
-            `uvm_info("MONITOR", $sformatf("RD2=0x%08h", internal_vif.RD2), UVM_LOW)
-            `uvm_info("MONITOR", $sformatf("WD3=0x%08h", internal_vif.WD3), UVM_LOW)
+                // register file
+                `uvm_info("MONITOR", $sformatf("RD1=0x%08h", internal_vif.RD1), UVM_LOW)
+                `uvm_info("MONITOR", $sformatf("RD2=0x%08h", internal_vif.RD2), UVM_LOW)
+                `uvm_info("MONITOR", $sformatf("WD3=0x%08h", internal_vif.WD3), UVM_LOW)
 
-            // ALU
-            `uvm_info("MONITOR", $sformatf("ALUResult=0x%08h", internal_vif.ALUResult), UVM_LOW)
-            `uvm_info("MONITOR", $sformatf("SrcB=0x%08h", internal_vif.SrcB), UVM_LOW)
-            `uvm_info("MONITOR", $sformatf("zero=0x%08h", internal_vif.zero), UVM_LOW)
+                // ALU
+                `uvm_info("MONITOR", $sformatf("ALUResult=0x%08h", internal_vif.ALUResult), UVM_LOW)
+                `uvm_info("MONITOR", $sformatf("SrcB=0x%08h", internal_vif.SrcB), UVM_LOW)
+                `uvm_info("MONITOR", $sformatf("zero=0x%08h", internal_vif.zero), UVM_LOW)
 
-            // data memory
-            `uvm_info("MONITOR", $sformatf("ReadData=0x%08h", internal_vif.ReadData), UVM_LOW)
-            
-            // control signals
-            `uvm_info("MONITOR", $sformatf("RegWrite=0x%08h", internal_vif.RegWrite), UVM_LOW)
-            `uvm_info("MONITOR", $sformatf("ImmSrc=0x%08h", internal_vif.ImmSrc), UVM_LOW)
-            `uvm_info("MONITOR", $sformatf("ALUSrc=0x%08h", internal_vif.ALUSrc), UVM_LOW)
-            `uvm_info("MONITOR", $sformatf("ALUControl=0x%08h", internal_vif.ALUControl), UVM_LOW)
-            `uvm_info("MONITOR", $sformatf("MemWrite=0x%08h", internal_vif.MemWrite), UVM_LOW)
-            `uvm_info("MONITOR", $sformatf("ResultSrc=0x%08h", internal_vif.ResultSrc), UVM_LOW)
-            `uvm_info("MONITOR", $sformatf("PCSrc=0x%08h", internal_vif.PCSrc), UVM_LOW)
+                // data memory
+                `uvm_info("MONITOR", $sformatf("ReadData=0x%08h", internal_vif.ReadData), UVM_LOW)
+                
+                // control signals
+                `uvm_info("MONITOR", $sformatf("RegWrite=0x%08h", internal_vif.RegWrite), UVM_LOW)
+                `uvm_info("MONITOR", $sformatf("ImmSrc=0x%08h", internal_vif.ImmSrc), UVM_LOW)
+                `uvm_info("MONITOR", $sformatf("ALUSrc=0x%08h", internal_vif.ALUSrc), UVM_LOW)
+                `uvm_info("MONITOR", $sformatf("ALUControl=0x%08h", internal_vif.ALUControl), UVM_LOW)
+                `uvm_info("MONITOR", $sformatf("MemWrite=0x%08h", internal_vif.MemWrite), UVM_LOW)
+                `uvm_info("MONITOR", $sformatf("ResultSrc=0x%08h", internal_vif.ResultSrc), UVM_LOW)
+                `uvm_info("MONITOR", $sformatf("PCSrc=0x%08h", internal_vif.PCSrc), UVM_LOW)
+            end
 
             // `uvm_info("MONITOR", $sformatf("Internal transaction contents: %s", internal_tx.convert2string()), UVM_LOW)
 

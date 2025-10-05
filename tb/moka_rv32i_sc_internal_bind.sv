@@ -35,7 +35,7 @@ module moka_rv32i_sc_internal_bind
     
     // control signals
     input logic RegWrite,
-    input logic [1 : 0] ImmSrc,
+    input logic [2 : 0] ImmSrc,
     input logic ALUSrc,
     input logic [3 : 0] ALUControl,
     input logic MemWrite,
