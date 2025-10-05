@@ -24,7 +24,7 @@ module moka_top
 
 
   parameter INST_MEM_CAPACITY = 1024;
-  parameter DATA_MEM_CAPACITY = 1024;
+  parameter DATA_MEM_CAPACITY = 10 * 1024;
   parameter NB_OF_REGS = 32;
   parameter ADDRESS_BIT_WIDTH = 5;
 
@@ -61,7 +61,7 @@ module moka_top
   
   // control signals
   wire RegWrite;
-  wire [1 : 0] ImmSrc;
+  wire [2 : 0] ImmSrc;
   wire ALUSrc;
   wire [3 : 0] ALUControl;
   wire MemWrite;
@@ -121,7 +121,7 @@ module moka_top
   MUX2_A_INS_MEM
   (
     .rstn(rstn),
-    .en(en),
+    .en(1),
     .sel(instr_mem_we),
     .a(pc),
     .b(instr_mem_address),

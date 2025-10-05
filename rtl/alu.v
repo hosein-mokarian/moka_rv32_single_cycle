@@ -21,6 +21,7 @@ module alu
   localparam OP_SRA = 4'b0111;
   localparam OP_OR  = 4'b1000;
   localparam OP_AND = 4'b1001;
+  localparam OP_LUI = 4'b1010;
 
 
   always @(*)
@@ -40,8 +41,9 @@ module alu
         OP_XOR: y = srca ^ srcb;
         OP_SRL: y = srca >> srcb;
         OP_SRA: y = srca >>> srcb; // {srca[DATA_WIDTH - 1], srca[DATA_WIDTH - 2 : 0] >> srcb};
-        OP_OR : y = srca | srca;
+        OP_OR : y = srca | srcb;
         OP_AND: y = srca & srcb;
+        OP_LUI: y = srcb << 12;
       endcase
     end
   end

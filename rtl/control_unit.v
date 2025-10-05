@@ -9,7 +9,7 @@ module control_unit
     input funct7,
     input zero,
     output reg RegWrite,
-    output reg [1 : 0] ImmSrc,
+    output reg [2 : 0] ImmSrc,
     output reg ALUSrc,
     output reg [3 : 0] ALUControl,
     output reg MemWrite,
@@ -59,6 +59,8 @@ module control_unit
   localparam ECALL = 7'b1110011;
   localparam EBREAK = 7'b1110011;
 
+  localparam LUI = 7'b0110111;
+
   localparam B_TYPE = 7'b1100011;
   localparam LOAD = 7'b0000011;
   localparam STORE = 7'b0100011;
@@ -75,12 +77,13 @@ module control_unit
   localparam OP_SRA = 4'b0111;
   localparam OP_OR  = 4'b1000;
   localparam OP_AND = 4'b1001;
+  localparam OP_LUI = 4'b1010;
 
 
   reg Branch;
   reg Jump;
 
-  reg [2 : 0] ALUOp;
+  reg [3 : 0] ALUOp;
   wire op_5;
   wire [2 : 0] func3_2_0;
   wire funct7_5;
@@ -103,79 +106,90 @@ module control_unit
         LW: // LOAD
         begin
           RegWrite = 1;
-          ImmSrc = 2'b00;
+          ImmSrc = 3'b000;
           ALUSrc = 1;
           MemWrite = 0;
           ResultSrc = 2'b01;
           Branch = 0;
-          ALUOp = 2'b00;
+          ALUOp = 4'b0000;
           Jump = 0;
         end
         SW: // STORE
         begin
           RegWrite = 0;
-          ImmSrc = 2'b01;
+          ImmSrc = 3'b001;
           ALUSrc = 1;
           MemWrite = 1;
           ResultSrc = 2'bxx;
           Branch = 0;
-          ALUOp = 2'b00;
+          ALUOp = 4'b0000;
           Jump = 0;
         end
         R_TYPE:
         begin
           RegWrite = 1;
-          ImmSrc = 2'bxx;
+          ImmSrc = 3'bxxx;
           ALUSrc = 0;
           MemWrite = 0;
           ResultSrc = 2'b00;
           Branch = 0;
-          ALUOp = 2'b10;
+          ALUOp = 4'b0010;
           Jump = 0;
         end
         BEQ: // B_TYPE
         begin
           RegWrite = 0;
-          ImmSrc = 2'b10;
+          ImmSrc = 3'b010;
           ALUSrc = 0;
           MemWrite = 0;
           ResultSrc = 2'bxx;
           Branch = 1;
-          ALUOp = 2'b01;
+          ALUOp = 4'b0001;
           Jump = 0;
         end
         ADDI: // I_TYPE
         begin
           RegWrite = 1;
-          ImmSrc = 2'b00;
+          ImmSrc = 3'b000;
           ALUSrc = 1;
           MemWrite = 0;
           ResultSrc = 2'b00;
           Branch = 0;
-          ALUOp = 2'b10;
+          ALUOp = 4'b0010;
           Jump = 0;
         end
         JAL:
         begin
           RegWrite = 1;
-          ImmSrc = 2'b11;
+          ImmSrc = 3'b011;
           ALUSrc = 1'bx;
           MemWrite = 0;
           ResultSrc = 2'b10;
           Branch = 0;
-          ALUOp = 2'bxx;
+          ALUOp = 4'bxxxx;
           Jump = 1;
         end
         JALR:
         begin
           RegWrite = 1;
-          ImmSrc = 2'b11;
+          ImmSrc = 3'b011;
           ALUSrc = 1'bx;
           MemWrite = 0;
           ResultSrc = 2'b10;
           Branch = 0;
-          ALUOp = 2'bxx;
+          ALUOp = 4'bxxxx;
           Jump = 1;
+        end
+        LUI:
+        begin
+          RegWrite = 1;
+          ImmSrc = 3'b100;
+          ALUSrc = 1;
+          MemWrite = 0;
+          ResultSrc = 2'b00;
+          Branch = 0;
+          ALUOp = 4'b0011;
+          Jump = 0;
         end
       endcase
     end
@@ -193,9 +207,9 @@ module control_unit
     else if (rstn && en)
     begin
       case (ALUOp)
-        3'b000: ALUControl = OP_ADD;
-        3'b001: ALUControl = OP_SUB;
-        3'b010:
+        4'b0000: ALUControl = OP_ADD;
+        4'b0001: ALUControl = OP_SUB;
+        4'b0010:
         begin
           case (func3_2_0)
             3'b000:
@@ -224,6 +238,7 @@ module control_unit
             3'b111: ALUControl = OP_AND;
           endcase
         end
+        4'b0011: ALUControl = OP_LUI;
       endcase
     end
   end

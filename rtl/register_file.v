@@ -24,13 +24,10 @@ module register_file
     begin
       for (i = 0; i < NB_OF_REGS; i=i+1)
         mem[i] <= 0;
-      
-      mem[9] <= 'd10;
-      mem[9] <= 'h2004;
     end
     else if (rstn && en)
     begin
-      if (WD3 == 1)
+      if (WE3 == 1)
         mem[A3] <= WD3;
     end
   end
