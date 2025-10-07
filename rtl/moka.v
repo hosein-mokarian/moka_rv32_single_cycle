@@ -101,7 +101,7 @@ module moka_top
     .rstn(rstn),
     .en(en),
     .a(pc),
-    .b('d1), // + 4 // todo
+    .b('d4), // + 4 // todo
     .y(PCPlus4)
   );
 
