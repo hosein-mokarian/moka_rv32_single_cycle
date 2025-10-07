@@ -46,16 +46,16 @@ class moka_rv32i_sc_sequence extends uvm_sequence #(moka_rv32i_sc_transaction);
 
             // Simple Test program
             program_instr_memory(32'h00000000, 32'h00600293);
-            program_instr_memory(32'h00000001, 32'h000024B7);
-            program_instr_memory(32'h00000002, 32'h00448493);
-            program_instr_memory(32'h00000003, 32'h00002537);
-            program_instr_memory(32'h00000004, 32'h01000593);
-            program_instr_memory(32'h00000005, 32'h00B52023);
-            program_instr_memory(32'h00000006, 32'h00000513);
-            program_instr_memory(32'h00000007, 32'hFFC4A303);
-            program_instr_memory(32'h00000008, 32'h0064A423);
-            program_instr_memory(32'h00000009, 32'h0062E233);
-            program_instr_memory(32'h0000000A, 32'hFE420AE3);
+            program_instr_memory(32'h00000004, 32'h000024B7);
+            program_instr_memory(32'h00000008, 32'h00448493);
+            program_instr_memory(32'h0000000C, 32'h00002537);
+            program_instr_memory(32'h00000010, 32'h01000593);
+            program_instr_memory(32'h00000014, 32'h00B52023);
+            program_instr_memory(32'h00000018, 32'h00000513);
+            program_instr_memory(32'h0000001C, 32'hFFC4A303);
+            program_instr_memory(32'h00000020, 32'h0064A423);
+            program_instr_memory(32'h00000024, 32'h0062E233);
+            program_instr_memory(32'h00000028, 32'hFE420AE3);
 
             `uvm_info("SEQ", "Programing the instruction memory is completed", UVM_LOW)
 
